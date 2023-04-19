@@ -3,6 +3,7 @@ if (process.env.DOT_ENV !== 'production'){
 }
 
 const express = require('express')
+require('./config/mongoose')
 
 
 const app = express()
