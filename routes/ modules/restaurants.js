@@ -3,7 +3,7 @@ const router = express.Router()
 const Restaurant = require('../../models/restaurant')
 
 // Create
-// Read 
+// Read All
 router.get('/', (req, res) => {
   const userId = req.user._id
 
@@ -12,6 +12,18 @@ router.get('/', (req, res) => {
     .lean()
     .sort({ _id: 'asc' })
     .then(restaurants => { res.render('index', { restaurants }) })
+    .catch(err => console.log(err))
+})
+
+// Read One
+router.get('/:id', (req, res) => {
+  const id = req.params.id
+  Restaurant.findById(id)
+    .lean()
+    .then(restaurant => {
+      console.log(restaurant)
+      res.render('detail', { restaurant })
+    })
     .catch(err => console.log(err))
 })
 

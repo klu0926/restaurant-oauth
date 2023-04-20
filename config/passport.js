@@ -22,9 +22,9 @@ module.exports = function passportSetup(app) {
     // 用email查詢使用者
     User.findOne({ email })
       .then(user => {
-        // 使用者不存在
+        // 檢查使用者存在
         if (!user) {
-          return done(null, false, req.flash('warning_msg', 'Email已經註冊過了。'))
+          return done(null, false, req.flash('warning_msg', '這Email沒有被註冊過。'))
         }
 
         // 使用bcrypt檢查密碼
