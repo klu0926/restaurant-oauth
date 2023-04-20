@@ -7,7 +7,7 @@
   <div class="col-md-10 col-12 mx-auto">
     {{>message}}
     <!--search form-->
-    <form class="row row-cols-3 px-3" action="/search" method="post">
+    <form class="row row-cols-3 px-3" action="/search" method="get">
       <!--search bar-->
       <div>
         <div class='input-group'>
@@ -82,8 +82,13 @@
         {{/each}}
       </div>
       {{else}}
+      <!--沒有餐廳資料的話-->
       <div class="mt-5 d-flex justify-content-center text-secondary">
-        <h1>抱歉沒有找到符合的餐廳，請您從新查詢～</h1>
+        {{#if noData}}
+        <h3>您目前還沒有新增任何餐廳唷，請使用右上角的『新增餐廳＋』</h3>
+        {{else}}
+        <h3>抱歉沒有找到符合的餐廳，請您從新查詢～</h3>
+        {{/if}}
       </div>
       {{/if}}
     </div>

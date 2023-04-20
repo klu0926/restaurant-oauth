@@ -49,7 +49,12 @@ router.get('/', (req, res) => {
   Restaurant.find({ userId })
     .lean()
     .sort({ _id: 'asc' })
-    .then(restaurants => { res.render('index', { restaurants }) })
+    .then(restaurants => { 
+      if (restaurants.length === 0) {
+        return res.render('index', { noData: true })
+      } 
+      res.render('index', { restaurants })
+     })
     .catch(err => console.log(err))
 })
 
