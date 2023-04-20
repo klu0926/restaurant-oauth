@@ -15,7 +15,7 @@ router.get('/login', isNotAuthenticated, (req, res) => {
 router.post('/login', (req, res, next) => {
   const { email, password } = req.body
   if (!email || !password) {
-    req.flash('warning_msg', 'Email跟Password都是必填的唷。')
+    res.locals.warning_msg = 'Email跟Password都是必填的唷。'
     return res.render('login', { email })
   }
   next()
@@ -74,6 +74,7 @@ router.post('/register', (req, res, next) => {
     }
 
     // 都沒問題，開始製作使用者資料
+
     // 製作密碼
     return bcrypt
       .genSalt(10)

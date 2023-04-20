@@ -1,0 +1,80 @@
+<!-- new -->
+<h1 class="mb-1 restaurant-show-title">新增餐廳</h1>
+
+<div class="container">
+  <div class="row d-flex justify-content-center">
+    <div class="col-sm-12 col-md-10 col-lg-6">
+      <!-- from -->
+      <form action="/restaurants/create" method="post">
+        {{>message}}
+        <!-- 必要資訊 -->
+        <h4 class="text-primary mt-0 mb-1">必要資訊 Require</h4>
+        <hr class="mt-0">
+        <!-- name -->
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="name">名稱</label>
+          <input class="form-control" type="text" name="name" id="name" placeholder="" aria-label="name" {{#if
+            data.name}} value="{{data.name}}" {{/if}}>
+        </div>
+        <!-- 類型 -->
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="category">類型</label>
+          <select class="form-control" id="category" name="category" id="category">
+            <option value="">選擇餐廳類型</option>
+            <option value="日本料理" {{#isSame data.category "日本料理" }} selected {{/isSame}}>日本料理</option>
+            <option value="中東料理" {{#isSame data.category "中東料理" }} selected {{/isSame}}>中東料理</option>
+            <option value="義式料理" {{#isSame data.category "義式料理" }} selected {{/isSame}}>義式料理</option>
+            <option value="美式料理" {{#isSame data.category "美式料理" }} selected {{/isSame}}>美式料理</option>
+            <option value="台式料理" {{#isSame data.category "台式料理" }} selected {{/isSame}}>台式料理</option>
+            <option value="酒吧" {{#isSame data.category "酒吧" }} selected {{/isSame}}>酒吧</option>
+            <option value="咖啡" {{#isSame data.category "咖啡" }} selected {{/isSame}}>咖啡</option>
+            <option value="其他" {{#isSame data.category "其他" }} selected {{/isSame}}>其他</option>
+          </select>
+        </div>
+        <!-- 評價 -->
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="rating">評價</label>
+          <input class="form-control" type="number" name="rating" id="rating" placeholder="評價 0-5 顆星" aria-label="name"
+            min="0" max="5" step="0.1" {{#if data.rating}} value="{{data.rating}}" {{/if}}>
+        </div>
+        <!-- 介紹 -->
+        <div class="input-group">
+          <label class="input-group-text" for="description">介紹</label>
+          <textarea class="form-control" id="description" name="description" rows="3" maxlength="150"
+            placeholder="餐廳介紹最多150字" {{#if data.description}} value="{{data.description}}" {{/if}}></textarea>
+        </div>
+
+        <!-- 其他資訊 -->
+        <h5 class="text-secondary mt-5 mb-1">其他資訊 Optional</h5>
+        <hr class="mt-0">
+        <!-- 英文名稱 -->
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="name_en">英文名稱</label>
+          <input type="text" class="form-control" name="name_en" id="name_en" aria-label="english name"
+            aria-describedby="basic-addon1" {{#if data.name_en}} value="{{data.name_en}}" {{/if}}>
+        </div>
+        <!-- 照片 -->
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="image">照片連結</label>
+          <input class="form-control" type="text" name="image" id="image" aria-label="image url" {{#if data.image}}
+            value="{{data.image}}" {{/if}}>
+        </div>
+        <!-- 電話 -->
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="phone">電話</label>
+          <input class="form-control" type="text" name="phone" id="phone" aria-label="phone" {{#if data.phone}}
+            value="{{data.phone}}" {{/if}}>
+        </div>
+        <!-- 地址 -->
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="location">地址</label>
+          <input class="form-control" type="text" name="location" id="location" aria-label="location" {{#if
+            data.location}} value="{{data.location}}" {{/if}}>
+        </div>
+
+        <!--submit-->
+        <button type="submit" class="btn btn-primary mt-3" style="width: 100%;">送出</button>
+      </form>
+    </div>
+  </div>
+</div>

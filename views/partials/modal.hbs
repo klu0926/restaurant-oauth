@@ -1,0 +1,21 @@
+<!-- Delete Modal -->
+<div class="modal fade" id="deleModal" tabindex="-1" aria-labelledby="deleModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">確定刪除： <span
+            id="modal-restaurant-name"><!--use js to control--></span>
+          ?
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <form id="modal-delete-form" action="#" method="POST"> <!--use js to control-->
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal end -->
