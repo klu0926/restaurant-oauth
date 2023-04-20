@@ -1,6 +1,6 @@
 module.exports = {
 
-  // req.isAuthenticated() 是由 password 提供
+  // req.isAuthenticated() 是由 passport 提供
 
   isAuthenticated: (req, res, next) => {
     if (req.isAuthenticated()) {
