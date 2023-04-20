@@ -74,11 +74,6 @@ router.post('/register', (req, res, next) => {
     }
 
     // 都沒問題，開始製作使用者資料
-
-    // 檢查使用者是否有輸入name，沒有就幫他取一個接地氣的名字
-    if (name === '') {
-      name = "愛美食不留名"
-    }
     // 製作密碼
     return bcrypt
       .genSalt(10)

@@ -6,8 +6,9 @@
 <div class='my-container container search-bar mt-0'>
   <div class="col-md-10 col-12 mx-auto">
     {{>message}}
-    <form class="row row-cols-3 px-3" action="/search">
-      <!--search-->
+    <!--search form-->
+    <form class="row row-cols-3 px-3" action="/search" method="post">
+      <!--search bar-->
       <div>
         <div class='input-group'>
           <input type='text' name='keyword' class='form-control w-50' placeholder='輸入餐廳、分類'
@@ -17,10 +18,10 @@
           </div>
         </div>
       </div>
-      <!---->
+      <!--空的一格-->
       <div>
       </div>
-      <!--sort-->
+      <!--sort selector-->
       <div>
         <div class='input-group'>
           <select class='form-select' name='sort' onchange='this.form.submit()'> <!-- <<選擇後直接submit -->

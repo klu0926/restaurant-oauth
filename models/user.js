@@ -2,10 +2,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 // 其中 email 與密碼是必填欄位，但名字不是
-const userSchema = new Schema ({
+const userSchema = new Schema({
   name: {
     type: String,
-    require: false,
+    require: true,
+    default: '愛美食不留名'
   },
   email: {
     type: String,
