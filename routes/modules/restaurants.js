@@ -87,8 +87,9 @@ router.put('/:id', (req, res) => {
   const updateData = req.body
   let { name, category, rating, description, location } = updateData
 
+  console.log('category', category)
 
-  // 檢查必要資料
+  // 檢查必要資料，有少就提示
   name = name.trim()
   if (!name || !category || !rating || !description) {
     updateData._id = id // 讓 edit form 知道 id
