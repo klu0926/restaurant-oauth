@@ -3,10 +3,11 @@ const router = express.Router()
 const passport = require('passport')
 const User = require('../../models/user')
 const bcrypt = require('bcryptjs')
+const { isAuthenticated, isNotAuthenticated } = require('../../middleware/auth')
 
 
 // Login Get
-router.get('/login', (req, res) => {
+router.get('/login', isNotAuthenticated, (req, res) => {
   res.render('login')
 })
 
@@ -17,13 +18,13 @@ router.post('/login', passport.authenticate('local', {
 })
 )
 // Register Get
-router.get('/register', (req, res) => {
+router.get('/register', isNotAuthenticated, (req, res) => {
   res.render('register')
 })
 
 // Register Post
 router.post('/register', (req, res, next) => {
-  const { name, email, password, confirmPassword } = req.body
+  let { name, email, password, confirmPassword } = req.body
   const errors = []
 
   // 檢查是否有漏資料 (name不需要)
