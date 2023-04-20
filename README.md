@@ -72,23 +72,36 @@ MONGODB_URL=mongodb+srv://<username>:<password>@<cluster>.pk4dwnp.mongodb.net/<d
 ```
 npm run seed
 ```
+8.製作 .env檔案，可以參考 .env.example
+```
+# APP
+PORT=
+# MongoDB
+MONGODB_URI=
+# Session
+SESSION_SECRET=
+# Facebook
+FACEBOOK_APP_CALLBACK=
+FACEBOOK_APP_ID=
+FACEBOOK_APP_SECRET=
+```
 
-8.啟動伺服器 (這會使用 nodemon 啟動專案)
+9.啟動伺服器 (這會使用 nodemon 啟動專案)
 ```
 npm run dev 
 ```
 
-9.當 terminal 出現以下字樣，表示伺服器已啟動並成功連結
+10.當 terminal 出現以下字樣，表示伺服器已啟動並成功連結
 ```
 server live on http://localhost:3000
 ```
 
-13.打開瀏覽器輸入以下網址來使用本專案
+11.打開瀏覽器輸入以下網址來使用本專案
 ```
 http://localhost:3000 
 ```
 
-14.若欲暫停使用
+12.若欲暫停使用
 ```
 ctrl + c
 ```
