@@ -12,11 +12,21 @@ router.get('/login', isNotAuthenticated, (req, res) => {
 })
 
 // Login Post
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/user/login',
-})
+router.post('/login', (req, res, next) => {
+  const { email, password } = req.body
+  if (!email || !password) {
+    req.flash('warning_msg', 'Email跟Password都是必填的唷。')
+    return res.render('login', { email })
+  }
+  next()
+},
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/user/login',
+  })
 )
+
+
 // Register Get
 router.get('/register', isNotAuthenticated, (req, res) => {
   res.render('register')

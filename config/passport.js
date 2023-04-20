@@ -4,8 +4,6 @@ const FacebookStrategy = require('passport-facebook').Strategy
 const User = require('../models/user')
 const bcrypt = require('bcryptjs')
 
-
-// 
 // export this function, to use in app.js
 module.exports = function passportSetup(app) {
 
@@ -20,19 +18,20 @@ module.exports = function passportSetup(app) {
     passReqToCallback: true,
 
   }, (req, email, password, done) => {
+
     // 用email查詢使用者
     User.findOne({ email })
       .then(user => {
         // 使用者不存在
         if (!user) {
-          return done(null, false, req.flash('warning_msg', 'That email is not registered!'))
+          return done(null, false, req.flash('warning_msg', 'Email已經註冊過了。'))
         }
 
         // 使用bcrypt檢查密碼
         return bcrypt.compare(password, user.password)
           .then(isMatch => {
             if (!isMatch) {
-              return done(null, false, req.flash('warning_msg', 'Email or Password incorrect!'))
+              return done(null, false, req.flash('warning_msg', 'Email 或 Password 錯誤。'))
             }
             // 通過檢查，回傳使用者
             return done(null, user)
