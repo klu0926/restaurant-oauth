@@ -5,8 +5,7 @@ const User = require('../models/user')
 const bcrypt = require('bcryptjs')
 
 // export this function, to use in app.js
-module.exports = function passportSetup(app) {
-
+module.exports = function passportSetup (app) {
   // 1. init 初始化
   app.use(passport.initialize())
   app.use(passport.session())
@@ -15,10 +14,9 @@ module.exports = function passportSetup(app) {
   passport.use(new LocalStrategy({
     // 設定
     usernameField: 'email',
-    passReqToCallback: true,
+    passReqToCallback: true
 
   }, (req, email, password, done) => {
-
     // 用email查詢使用者
     User.findOne({ email })
       .then(user => {
@@ -40,7 +38,7 @@ module.exports = function passportSetup(app) {
       .catch(error => done(error, false))
   }))
 
-  //------------------------------------------------
+  // ------------------------------------------------
   // 2. Strategy : FacebookStrategy( {設定}, 驗證func)
   passport.use(new FacebookStrategy({
     // 設定
@@ -50,7 +48,7 @@ module.exports = function passportSetup(app) {
     profileFields: ['email', 'displayName']
 
   }, (accessToken, refreshToken, profile, done) => {
-    //使用fb在callback回傳來的資料  
+    // 使用fb在callback回傳來的資料
     const { name, email } = profile._json
 
     // 找使用者

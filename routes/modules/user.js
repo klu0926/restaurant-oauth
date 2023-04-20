@@ -3,8 +3,7 @@ const router = express.Router()
 const passport = require('passport')
 const User = require('../../models/user')
 const bcrypt = require('bcryptjs')
-const { isAuthenticated, isNotAuthenticated } = require('../../middleware/auth')
-
+const { isNotAuthenticated } = require('../../middleware/auth')
 
 // Login Get
 router.get('/login', isNotAuthenticated, (req, res) => {
@@ -20,12 +19,11 @@ router.post('/login', (req, res, next) => {
   }
   next()
 },
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/user/login',
-  })
+passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/user/login'
+})
 )
-
 
 // Register Get
 router.get('/register', isNotAuthenticated, (req, res) => {
@@ -60,7 +58,6 @@ router.post('/register', (req, res, next) => {
 
   // 用 email 找使用者
   User.findOne({ email }).then(user => {
-
     // 找到已經有使用者用這email
     if (user) {
       errors.push({ message: '這個 Email 已經註冊過了。' })
@@ -93,7 +90,7 @@ router.post('/register', (req, res, next) => {
   })
 }, passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/user/login',
+  failureRedirect: '/user/login'
 }
 ))
 

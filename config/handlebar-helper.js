@@ -1,6 +1,3 @@
-// helper
-const handlebars = require('handlebars')
-
 const handlebarHelper = {
 
   isSame: (string1, string2, options) => {
@@ -8,8 +5,7 @@ const handlebarHelper = {
       return options.fn(this)
     }
     return options.inverse(this)
-  },
+  }
 }
 
 module.exports = handlebarHelper
-

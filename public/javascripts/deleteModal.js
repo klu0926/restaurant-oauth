@@ -1,5 +1,4 @@
-function deleteModalSetup() {
-
+function deleteModalSetup () {
   const deleteButtons = document.querySelectorAll('.deleteButton')
 
   // modal

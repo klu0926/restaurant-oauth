@@ -20,7 +20,7 @@ const PORT = process.env.PORT
 app.engine('hbs', exphbs({
   defaultLayout: 'main',
   extname: '.hbs',
-  helpers: helper,
+  helpers: helper
 }))
 app.set('view engine', 'hbs')
 
@@ -28,7 +28,7 @@ app.set('view engine', 'hbs')
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: true
 }))
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
@@ -46,7 +46,6 @@ app.use((req, res, next) => {
 
 // routes
 app.use(routes)
-
 
 app.listen(PORT, () => {
   console.log(`server is live on http://localhost:${PORT}`)

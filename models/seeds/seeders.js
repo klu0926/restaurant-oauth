@@ -5,7 +5,6 @@ const db = require('../../config/mongoose')
 const User = require('../user')
 const Restaurant = require('../restaurant')
 const bcrypt = require('bcryptjs')
-const restaurant = require('../restaurant')
 
 // 種子資料
 const RESTAURANTS_DATA = require('./restaurant.json').results
@@ -40,7 +39,7 @@ db.once('open', async () => {
     .then(() => {
       console.log('creating seeder restaurants...')
       // slice restaurant data
-      sliceData = RESTAURANTS_DATA.slice(0, restaurantsAmount)
+      const sliceData = RESTAURANTS_DATA.slice(0, restaurantsAmount)
 
       return Promise.all(
         sliceData.map(data => {
@@ -53,7 +52,7 @@ db.once('open', async () => {
           if (user2RestaurantList.includes(data.id)) {
             data.userId = users[1]._id
           }
-          //做餐廳資料
+          // 做餐廳資料
           return Restaurant.create(data)
         })
       )

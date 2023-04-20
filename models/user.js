@@ -10,11 +10,11 @@ const userSchema = new Schema({
   },
   email: {
     type: String,
-    require: true,
+    require: true
   },
   password: {
     type: String,
-    require: true,
+    require: true
   },
   createAt: {
     type: Date,

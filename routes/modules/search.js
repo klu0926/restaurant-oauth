@@ -4,7 +4,6 @@ const Restaurant = require('../../models/restaurant')
 // search
 router.get('/', (req, res) => {
   const userId = req.user._id
-  const userHasRestaurant = false
   const keyword = req.query.keyword.trim()
   const lowerKeyWord = keyword.toLowerCase()
   const sort = req.query.sort
