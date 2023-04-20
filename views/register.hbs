@@ -1,0 +1,42 @@
+<div class="offset-top">
+  <div class="row">
+    <div class="col-md-6 m-auto">
+      <div class="card card-body">
+        <!-- title -->
+        <h1 class="text-center mt-3">Register</h1>
+        {{> message}}
+        <!-- form -->
+        <form action="/users/register" method="POST">
+          <div class="mb-3">
+            <label class="mb-2" for="name">Name</label>
+            <input class="form-control" name="name" id="name" placeholder="Enter Name" {{#if
+              userData.name}}value="{{userData.name}}" {{/if}}>
+          </div>
+          <div class="mb-3">
+            <label class="mb-2" for="email">Email</label>
+            <input class="form-control" type="email" name="email" id="email" placeholder="Enter Email" {{#if
+              userData.email}}value="{{userData.email}}" {{/if}}>
+          </div>
+          <div class="mb-3">
+            <label class="mb-2" for="password">Password</label>
+            <input class="form-control" type="password" name="password" id="password" placeholder="Enter Password">
+          </div>
+          <div class="mb-3">
+            <label class="mb-2" for="confirmPassword">Confirm Password</label>
+            <input class="form-control" type="password" name="confirmPassword" id="confirmPassword"
+              placeholder="Confirm Password">
+          </div>
+          <div class="row g-2">
+            <button class="btn btn-primary" type="submit">Register</button>
+            <a href="/auth/facebook" class="btn btn-info">Facebook Login</a>
+          </div>
+        </form>
+        <p class="lead mt-4">
+          Have An Account? <a href="/user/login">Login</a>
+        </p>
+        <p class="text-danger">{{message}}</p>
+
+      </div>
+    </div>
+  </div>
+</div>
