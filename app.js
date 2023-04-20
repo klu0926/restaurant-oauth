@@ -40,6 +40,8 @@ app.use((req, res, next) => {
   res.locals.user = req.user // passport done(null, user) 傳出來的使用者
   res.locals.success_msg = req.flash('success_msg') // 設定 flash success msg
   res.locals.warning_msg = req.flash('warning_msg') // 設定 flash warning msg
+  res.locals.noData = req.flash('noData')
+  console.log('noData', res.locals.noData)
   next()
 })
 
