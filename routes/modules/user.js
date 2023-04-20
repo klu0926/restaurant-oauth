@@ -74,6 +74,8 @@ router.post('/register', (req, res, next) => {
     }
 
     // 都沒問題，開始製作使用者資料
+    // 檢查名字，沒有就送他一個 undefined
+    if (name.trim() === '') { name = undefined }
 
     // 製作密碼
     return bcrypt

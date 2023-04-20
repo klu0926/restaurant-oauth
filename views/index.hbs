@@ -12,9 +12,11 @@
       <div>
         <div class='input-group'>
           <input type='text' name='keyword' class='form-control w-50' placeholder='輸入餐廳、分類'
-            aria-label='Restaurant Name...' value='{{keyword}}' aria-describedby='search-button' />
+            aria-label='Restaurant Name...' value='{{keyword}}' aria-describedby='search-button' {{#if
+            noData}}disabled{{/if}} />
           <div class='input-group-append'>
-            <button class='btn btn-major' type='submit' id='search-button'><i class='fas fa-search'></i></button>
+            <button class='btn btn-major' type='submit' id='search-button' {{#if noData}}disabled{{/if}}><i
+                class='fas fa-search'></i></button>
           </div>
         </div>
       </div>
@@ -24,7 +26,8 @@
       <!--sort selector-->
       <div>
         <div class='input-group'>
-          <select class='form-select' name='sort' onchange='this.form.submit()'> <!-- <<選擇後直接submit -->
+          <!-- <<選擇後直接submit -->
+          <select class='form-select' name='sort' onchange='this.form.submit()' {{#if noData}}disabled{{/if}}>
             <option value='' {{#if sort}}{{else}}selected{{/if}} disabled>選擇排序方式</option>
             <option value='_id-desc' {{#isSame sort '_id-desc' }} selected {{/isSame}}>最新</option>
             <option value='_id-asc' {{#isSame sort '_id-asc' }} selected {{/isSame}}>最舊</option>

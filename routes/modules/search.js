@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
     .sort(sortObject)
     .then(restaurants => {
       // 檢查使用者是否有任何餐廳，沒有就轉回/restaurants
-      if (restaurants.length === 0) {
+      if (!restaurants) {
         req.flash('noData', true)
         return res.redirect('/restaurants')
       }

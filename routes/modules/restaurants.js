@@ -51,6 +51,7 @@ router.get('/', (req, res) => {
     .sort({ _id: 'asc' })
     .then(restaurants => {
       if (restaurants.length === 0) {
+        req.flash('noData', true)
         return res.render('index', { noData: true })
       }
 
@@ -86,8 +87,6 @@ router.put('/:id', (req, res) => {
   const id = req.params.id
   const updateData = req.body
   let { name, category, rating, description, location } = updateData
-
-  console.log('category', category)
 
   // 檢查必要資料，有少就提示
   name = name.trim()
