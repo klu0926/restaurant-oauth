@@ -33,7 +33,7 @@ header {
   height: 300px;
   background: #dddddd center center url('https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/5720/restaurants-list-cover.jpg');
   background-size: cover;
-  filter: blur(3px);
+  filter: blur(2px);
 }
 
 .search-bar .search-bar-outer {
