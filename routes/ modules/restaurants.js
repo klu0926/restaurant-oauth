@@ -41,7 +41,6 @@ router.post('/create', async (req, res) => {
     })
 })
 
-
 // Read All
 router.get('/', (req, res) => {
   const userId = req.user._id
@@ -65,7 +64,56 @@ router.get('/:id', (req, res) => {
     .catch(err => console.log(err))
 })
 
+// Update Page
+router.get('/:id/edit', (req, res) => {
+  const id = req.params.id
+  Restaurant.findById(id)
+    .lean()
+    .then(restaurant => {
+      res.render('edit', { restaurant })
+    })
+    .catch(err => console.log(err))
+})
+
 // Update
+router.put('/:id', (req, res) => {
+  const id = req.params.id
+  const updateData = req.body
+  let { name, category, rating, description, location } = updateData
+
+
+  // 檢查必要資料
+  name = name.trim()
+  if (!name || !category || !rating || !description) {
+    updateData._id = id // 讓 edit form 知道 id
+    res.locals.warning_msg = '必要資訊(Require) 都是必填的唷。'
+    return res.render('edit', { restaurant: updateData })
+  }
+
+  // 有填地址的話就幫忙製作google地圖連結
+  if (location.trim() !== '') {
+    const encodedInput = updateData.location
+    const googleMapLink = `https://www.google.com/maps?q=${encodedInput}`
+    updateData.google_map = googleMapLink
+  }
+
+  // 修改餐廳資料
+  Restaurant.findById(id)
+    .then(restaurant => {
+      for (const key in updateData) {
+        if (key in restaurant) {
+          restaurant[key] = updateData[key]
+        }
+      }
+      return restaurant.save()
+    })
+    .then(() => {
+      res.redirect(`/restaurants/${id}`)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+})
 
 
 // Delete
