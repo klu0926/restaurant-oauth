@@ -5,16 +5,16 @@ const Schema = mongoose.Schema
 const userSchema = new Schema({
   name: {
     type: String,
-    require: true,
+    required: true,
     default: '愛美食不留名'
   },
   email: {
     type: String,
-    require: true
+    required: true
   },
   password: {
     type: String,
-    require: true
+    required: true
   },
   createAt: {
     type: Date,
