@@ -2,49 +2,62 @@ const express = require('express')
 const router = express.Router()
 const Restaurant = require('../../models/restaurant')
 const categories = require('../../models/data/categories.json')
+const cities = require('../../models/data/tw-zip-code.json').cities
 
 // 新增餐廳 GET
 router.get('/create', (req, res) => {
-  res.render('create', { categories })
+
+
+  res.render('create', { categories, cities })
 })
 
 
 // 新增餐廳 POST
 router.post('/create', async (req, res) => {
   const data = req.body
-  let { name, category, rating, description, location } = data
+  let {
+    name,
+    category,
+    rating,
+    description,
+    county,
+    district,
+    address,
+  } = data
   const userId = req.user._id
 
-  console.log('categories:', categories)
-  // 檢查資料都有填
-  name = name.trim()
-  if (!name || !category || !rating || !description) {
-    res.locals.warning_msg = '必要資訊(Require) 都是必填的唷。'
-    console.log('data:', data)
-    console.log('categoryList:', categories)
-    return res.render('create', { data, categories })
+  try {
+    // 檢查必填資料
+    name = name.trim()
+    if (!name || !category || !rating || !description) {
+      throw new Error('必要資訊(Require) 都是必填的唷。')
+    }
+
+    // 合併出地址 location
+    const location = (county + district + address).trim()
+
+    // 檢查地址有的話就填入data，同時製作一個 google map
+    if (location.trim() !== '') {
+      // save to dada
+      data.location = location
+      // google map
+      const encodedInput = data.location
+      const googleMapLink = `https://www.google.com/maps?q=${encodedInput}`
+      data.google_map = googleMapLink
+    }
+
+    // 設定餐廳的userId
+    data.userId = userId
+
+    // 製作餐廳資料 後回去餐廳列表
+    await Restaurant.create(data)
+    res.redirect('/restaurants')
+
+
+  } catch (err) {
+    res.locals.warning_msg = err.message
+    return res.render('create', { data, categories, cities })
   }
-
-  // 
-
-  // 有填地址的話就幫忙製作google地圖連結
-  if (location.trim() !== '') {
-    const encodedInput = data.location
-    const googleMapLink = `https://www.google.com/maps?q=${encodedInput}`
-    data.google_map = googleMapLink
-  }
-
-  // 設定餐廳的userId
-  data.userId = userId
-
-  // 製作餐廳資料
-  Restaurant.create({ ...data })
-    .then(() => {
-      res.redirect('/')
-    })
-    .catch(error => {
-      console.log(error)
-    })
 })
 
 
