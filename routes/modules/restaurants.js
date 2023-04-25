@@ -1,37 +1,41 @@
 const express = require('express')
 const router = express.Router()
 const Restaurant = require('../../models/restaurant')
+const categoryList = require('../../models/data/category.json')
 
-// Create Page
+// 新增餐廳 GET
 router.get('/create', (req, res) => {
   res.render('create')
 })
 
-// Create
+
+// 新增餐廳 POST
 router.post('/create', async (req, res) => {
-  const data = req.body
-  let { name, category, rating, description, location } = data
+  const createInput = req.body
+  let { name, category, rating, description, location } = createInput
   const userId = req.user._id
 
-  // 檢查必要資料
+  // 檢查資料都有填
   name = name.trim()
   if (!name || !category || !rating || !description) {
     res.locals.warning_msg = '必要資訊(Require) 都是必填的唷。'
-    return res.render('create', { data })
+    return res.render('create', { data: createInput })
   }
+
+  // 
 
   // 有填地址的話就幫忙製作google地圖連結
   if (location.trim() !== '') {
-    const encodedInput = data.location
+    const encodedInput = createInput.location
     const googleMapLink = `https://www.google.com/maps?q=${encodedInput}`
-    data.google_map = googleMapLink
+    createInput.google_map = googleMapLink
   }
 
   // 設定餐廳的userId
-  data.userId = userId
+  createInput.userId = userId
 
   // 製作餐廳資料
-  Restaurant.create({ ...data })
+  Restaurant.create({ ...createInput })
     .then(() => {
       res.redirect('/')
     })
@@ -39,6 +43,8 @@ router.post('/create', async (req, res) => {
       console.log(error)
     })
 })
+
+
 
 // Read All
 router.get('/', (req, res) => {
