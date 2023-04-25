@@ -7,6 +7,7 @@
       <!-- from -->
       <form action="/restaurants/create" method="post">
         {{>message}}
+
         <!-- 必要資訊 -->
         <h4 class="text-primary mt-0 mb-1">必要資訊 Require</h4>
         <hr class="mt-0">
@@ -21,14 +22,23 @@
           <label class="input-group-text" for="category">類型</label>
           <select class="form-control" id="category" name="category" id="category">
             <option value="">選擇餐廳類型</option>
-            <option value="日本料理" {{#isSame data.category "日本料理" }} selected {{/isSame}}>日本料理</option>
-            <option value="中東料理" {{#isSame data.category "中東料理" }} selected {{/isSame}}>中東料理</option>
-            <option value="義式料理" {{#isSame data.category "義式料理" }} selected {{/isSame}}>義式料理</option>
-            <option value="美式料理" {{#isSame data.category "美式料理" }} selected {{/isSame}}>美式料理</option>
-            <option value="台式料理" {{#isSame data.category "台式料理" }} selected {{/isSame}}>台式料理</option>
-            <option value="酒吧" {{#isSame data.category "酒吧" }} selected {{/isSame}}>酒吧</option>
-            <option value="咖啡" {{#isSame data.category "咖啡" }} selected {{/isSame}}>咖啡</option>
-            <option value="其他" {{#isSame data.category "其他" }} selected {{/isSame}}>其他</option>
+            <!--要是有 data.category -->
+            {{#if data.category}}
+            {{#each categories as | cate |}}
+            {{#with ../data.category as | myCate |}}
+            {{#isSame cate myCate}}
+            <option value="{{cate}}" selected>{{cate}}</option>
+            {{else}}
+            <option value="{{cate}}">{{cate}}</option>
+            {{/isSame}}
+            {{/with}}
+            {{/each}}
+            <!--要是沒有 data.category -->
+            {{else}}
+            {{#each categories}}
+            <option value="{{this}}">{{this}}</option>
+            {{/each}}
+            {{/if}}
           </select>
         </div>
         <!-- 評價 -->

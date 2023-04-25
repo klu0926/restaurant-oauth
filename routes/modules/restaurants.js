@@ -1,41 +1,44 @@
 const express = require('express')
 const router = express.Router()
 const Restaurant = require('../../models/restaurant')
-const categoryList = require('../../models/data/category.json')
+const categories = require('../../models/data/categories.json')
 
 // 新增餐廳 GET
 router.get('/create', (req, res) => {
-  res.render('create')
+  res.render('create', { categories })
 })
 
 
 // 新增餐廳 POST
 router.post('/create', async (req, res) => {
-  const createInput = req.body
-  let { name, category, rating, description, location } = createInput
+  const data = req.body
+  let { name, category, rating, description, location } = data
   const userId = req.user._id
 
+  console.log('categories:', categories)
   // 檢查資料都有填
   name = name.trim()
   if (!name || !category || !rating || !description) {
     res.locals.warning_msg = '必要資訊(Require) 都是必填的唷。'
-    return res.render('create', { data: createInput })
+    console.log('data:', data)
+    console.log('categoryList:', categories)
+    return res.render('create', { data, categories })
   }
 
   // 
 
   // 有填地址的話就幫忙製作google地圖連結
   if (location.trim() !== '') {
-    const encodedInput = createInput.location
+    const encodedInput = data.location
     const googleMapLink = `https://www.google.com/maps?q=${encodedInput}`
-    createInput.google_map = googleMapLink
+    data.google_map = googleMapLink
   }
 
   // 設定餐廳的userId
-  createInput.userId = userId
+  data.userId = userId
 
   // 製作餐廳資料
-  Restaurant.create({ ...createInput })
+  Restaurant.create({ ...data })
     .then(() => {
       res.redirect('/')
     })
@@ -82,7 +85,7 @@ router.get('/:id/edit', (req, res) => {
   Restaurant.findById(id)
     .lean()
     .then(restaurant => {
-      res.render('edit', { restaurant })
+      res.render('edit', { restaurant, categories })
     })
     .catch(err => console.log(err))
 })
@@ -98,7 +101,10 @@ router.put('/:id', (req, res) => {
   if (!name || !category || !rating || !description) {
     updateData._id = id // 讓 edit form 知道 id
     res.locals.warning_msg = '必要資訊(Require) 都是必填的唷。'
-    return res.render('edit', { restaurant: updateData })
+    return res.render('edit', {
+      restaurant: updateData,
+      categories
+    })
   }
 
   // 有填地址的話就幫忙製作google地圖連結
