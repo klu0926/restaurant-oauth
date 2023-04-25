@@ -7,7 +7,7 @@ const Restaurant = require('../restaurant')
 const bcrypt = require('bcryptjs')
 
 // 種子資料
-const RESTAURANTS_DATA = require('./restaurant.json').results
+const RESTAURANTS_DATA = require('../data/restaurant.json').results
 const SEEDER_USER_1 = { email: 'user1@example.com', password: '12345678' }
 const SEEDER_USER_2 = { email: 'user2@example.com', password: '12345678' }
 const SEEDER_USERS = [SEEDER_USER_1, SEEDER_USER_2]

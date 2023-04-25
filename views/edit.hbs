@@ -1,63 +1,57 @@
-<!-- new -->
+<!-- edit -->
 <h1 class="mb-1 restaurant-show-title">更新餐廳資料</h1>
 
 <div class="container">
   <div class="row d-flex justify-content-center">
     <div class="col-sm-12 col-md-10 col-lg-6">
       <!-- from -->
-      <form class="position-relative" action="/restaurants/{{restaurant._id}}?_method=PUT" method="post">
-        <!-- back -->
-        <div class="mb-3" style="margin-top: -30px;">
-          {{>message}}
-          <a href="/restaurants/{{restaurant._id}}" style="text-decoration: none;">
-            <button class="deleteButton btn btn-light btn-sm border border-secondary text-secondary" type="button">
-              Back
-            </button>
-          </a>
-        </div>
+      <form novalidate action="/restaurants/{{restaurant._id}}?_method=PUT" method="post" class="restaurant-form">
+        {{>message}}
+
         <!-- 必要資訊 -->
         <h4 class="text-primary mt-0 mb-1">必要資訊 Require</h4>
         <hr class="mt-0">
         <!-- name -->
         <div class="input-group mb-3">
           <label class="input-group-text" for="name">名稱</label>
-          <input class="form-control" type="text" name="name" id="name" aria-label="name" value="{{restaurant.name}}">
+          <input class="form-control" type="text" name="name" id="name" placeholder="最多20字" aria-label="name"
+            maxlength="20" value="{{restaurant.name}}" required>
+          <div class="valid-feedback">符合</div>
+          <div class="invalid-feedback">必填:最多20個字</div>
         </div>
         <!-- 類型 -->
         <div class="input-group mb-3">
           <label class="input-group-text" for="category">類型</label>
-          <select class="form-control" id="category" name="category" id="category">
+          <select class="form-control" id="category" name="category" required>
             <option value="">選擇餐廳類型</option>
-            <!--要是有 restaurant.category -->
-            {{#if restaurant.category}}
             {{#each categories as | cate |}}
-            {{#with ../restaurant.category as | myCate |}}
-            {{#isSame cate myCate}}
+            {{#with ../restaurant.category as | selectedCate |}}
+            {{#isSame cate selectedCate}}
             <option value="{{cate}}" selected>{{cate}}</option>
             {{else}}
             <option value="{{cate}}">{{cate}}</option>
             {{/isSame}}
             {{/with}}
             {{/each}}
-            <!--要是沒有 data.category -->
-            {{else}}
-            {{#each categories}}
-            <option value="{{this}}">{{this}}</option>
-            {{/each}}
-            {{/if}}
           </select>
+          <div class="valid-feedback">符合</div>
+          <div class="invalid-feedback">必填</div>
         </div>
         <!-- 評價 -->
         <div class="input-group mb-3">
           <label class="input-group-text" for="rating">評價</label>
-          <input class="form-control" type="number" name="rating" id="rating" value="{{restaurant.rating}}"
-            aria-label="name" min="0" max="5" step="0.1">
+          <input class="form-control" type="number" name="rating" id="rating" placeholder="評價 0-5 顆星" aria-label="name"
+            min="0" max="5" step="0.1" value="{{restaurant.rating}}" required>
+          <div class="valid-feedback">符合</div>
+          <div class="invalid-feedback">必填:範圍是1-5</div>
         </div>
         <!-- 介紹 -->
         <div class="input-group">
           <label class="input-group-text" for="description">介紹</label>
-          <textarea class="form-control" id="description" name="description" rows="5"
-            maxlength="150">{{restaurant.description}}</textarea>
+          <textarea class="form-control" id="description" name="description" rows="3" placeholder="最多100字"
+            maxlength="50" required>{{restaurant.description}}</textarea>
+          <div class="valid-feedback">符合</div>
+          <div class="invalid-feedback">必填:最多100字</div>
         </div>
 
         <!-- 其他資訊 -->
@@ -67,30 +61,44 @@
         <div class="input-group mb-3">
           <label class="input-group-text" for="name_en">英文名稱</label>
           <input type="text" class="form-control" name="name_en" id="name_en" aria-label="english name"
-            aria-describedby="basic-addon1" value="{{restaurant.name_en}}">
+            placeholder="最多40個字" maxlength="40" pattern="^[A-Za-z0-9]+.*$" {{#if restaurant.name_en}}
+            value="{{restaurant.name_en}}" {{/if}}>
+          <div class="valid-feedback">符合</div>
+          <div class="invalid-feedback">40字以內的英文字母或數字</div>
         </div>
         <!-- 照片 -->
         <div class="input-group mb-3">
           <label class="input-group-text" for="image">照片連結</label>
           <input class="form-control" type="text" name="image" id="image" aria-label="image url"
-            value="{{restaurant.image}}">
+            placeholder="http://example.com/img.png" type="url" pattern="^https?:\/\/.+\.(jpe?g|png|gif)$" {{#if
+            restaurant.image}} value="{{restaurant.image}}" {{/if}}>
+          <div class="valid-feedback">符合</div>
+          <div class="invalid-feedback">請符合URL格式</div>
         </div>
         <!-- 電話 -->
         <div class="input-group mb-3">
           <label class="input-group-text" for="phone">電話</label>
-          <input class="form-control" type="text" name="phone" id="phone" aria-label="phone"
-            value="{{restaurant.phone}}">
+          <input class="form-control" type="text" name="phone" id="phone" aria-label="phone" placeholder="02-XXX-XXXX"
+            type="tel" pattern="\d{2,3}( |-)?\d{3,4}( |-)?\d{4}" maxlength="13" {{#if restaurant.phone}}
+            value="{{restaurant.phone}}" {{/if}}>
+          <div class="valid-feedback">符合</div>
+          <div class="invalid-feedback">請符合台灣市話格式</div>
         </div>
-        <!-- 地址 -->
+        <!--完整地址 location-->
         <div class="input-group mb-3">
           <label class="input-group-text" for="location">地址</label>
           <input class="form-control" type="text" name="location" id="location" aria-label="location"
-            value="{{restaurant.location}}">
+            placeholder="民生東路三段xxx號 (最多25個字)" maxlength="25" pattern="^[\u4e00-\u9fa5].+" {{#if restaurant.location}}
+            value="{{restaurant.location}}" {{/if}}>
+          <div class="valid-feedback">符合</div>
+          <div class="invalid-feedback">最多25個字需開頭是中文</div>
         </div>
-
         <!--submit-->
-        <button type="submit" class="btn btn-primary mt-3" style="width: 100%;">Submit</button>
+        <button type="submit" class="submit-btn btn btn-primary mt-3" style="width: 100%;">送出</button>
       </form>
     </div>
   </div>
 </div>
+
+<script src="/javascripts/validate.js"></script>
+<script src="/javascripts/districtSelector.js"></script>

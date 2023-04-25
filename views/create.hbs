@@ -5,7 +5,7 @@
   <div class="row d-flex justify-content-center">
     <div class="col-sm-12 col-md-10 col-lg-6">
       <!-- from -->
-      <form action="/restaurants/create" method="post">
+      <form novalidate action="/restaurants/create" method="post" class="restaurant-form">
         {{>message}}
 
         <!-- 必要資訊 -->
@@ -14,44 +14,40 @@
         <!-- name -->
         <div class="input-group mb-3">
           <label class="input-group-text" for="name">名稱</label>
-          <input class="form-control" type="text" name="name" id="name" placeholder="最多10字" aria-label="name"
-            maxlength="10" {{#if data.name}} value="{{data.name}}" {{/if}}>
+          <input class="form-control" type="text" name="name" id="name" placeholder="最多20字" aria-label="name"
+            maxlength="20" required>
+          <div class="valid-feedback">符合</div>
+          <div class="invalid-feedback">必填:最多20個字</div>
         </div>
         <!-- 類型 -->
+        {{data.category}}
         <div class="input-group mb-3">
           <label class="input-group-text" for="category">類型</label>
-          <select class="form-control" id="category" name="category">
+          <select class="form-control" id="category" name="category" required>
             <option value="">選擇餐廳類型</option>
-            <!--要是有 data.category -->
-            {{#if data.category}}
-            {{#each categories as | cate |}}
-            {{#with ../data.category as | myCate |}}
-            {{#isSame cate myCate}}
-            <option value="{{cate}}" selected>{{cate}}</option>
-            {{else}}
-            <option value="{{cate}}">{{cate}}</option>
-            {{/isSame}}
-            {{/with}}
-            {{/each}}
-            <!--要是沒有 data.category -->
-            {{else}}
             {{#each categories}}
             <option value="{{this}}">{{this}}</option>
             {{/each}}
-            {{/if}}
+
           </select>
+          <div class="valid-feedback">符合</div>
+          <div class="invalid-feedback">必填</div>
         </div>
         <!-- 評價 -->
         <div class="input-group mb-3">
           <label class="input-group-text" for="rating">評價</label>
           <input class="form-control" type="number" name="rating" id="rating" placeholder="評價 0-5 顆星" aria-label="name"
-            min="0" max="5" step="0.1" {{#if data.rating}} value="{{data.rating}}" {{/if}}>
+            min="0" max="5" step="0.1" required>
+          <div class="valid-feedback">符合</div>
+          <div class="invalid-feedback">必填:範圍是1-5</div>
         </div>
         <!-- 介紹 -->
         <div class="input-group">
           <label class="input-group-text" for="description">介紹</label>
-          <textarea class="form-control" id="description" name="description" rows="3" placeholder="最多50字" maxlength="50"
-            {{#if data.description}} value="{{data.description}}" {{/if}}></textarea>
+          <textarea class="form-control" id="description" name="description" rows="3" placeholder="最多50字" maxlength="100"
+            required></textarea>
+          <div class="valid-feedback">符合</div>
+          <div class="invalid-feedback">必填:最多100字</div>
         </div>
 
         <!-- 其他資訊 -->
@@ -61,21 +57,25 @@
         <div class="input-group mb-3">
           <label class="input-group-text" for="name_en">英文名稱</label>
           <input type="text" class="form-control" name="name_en" id="name_en" aria-label="english name"
-            placeholder="最多25個字" maxlength="25" {{#if data.name_en}} value="{{data.name_en}}" {{/if}}>
+            placeholder="最多40個字" maxlength="40" pattern="^[A-Za-z0-9]+.*$">
+          <div class="valid-feedback">符合</div>
+          <div class="invalid-feedback">40字以內的英文字母或數字</div>
         </div>
         <!-- 照片 -->
         <div class="input-group mb-3">
           <label class="input-group-text" for="image">照片連結</label>
           <input class="form-control" type="text" name="image" id="image" aria-label="image url"
-            placeholder="http://example.com/img.png" type="url" pattern="^https?:\/\/.+\.(jpe?g|png|gif)$" {{#if
-            data.image}} value="{{data.image}}" {{/if}}>
+            placeholder="http://example.com/img.png" type="url" pattern="^https?:\/\/.+\.(jpe?g|png|gif)$">
+          <div class="valid-feedback">符合</div>
+          <div class="invalid-feedback">請符合URL格式</div>
         </div>
         <!-- 電話 -->
         <div class="input-group mb-3">
           <label class="input-group-text" for="phone">電話</label>
           <input class="form-control" type="text" name="phone" id="phone" aria-label="phone" placeholder="02-XXX-XXXX"
-            type="tel" pattern="\d{2,3}-?\d{3,4}-?\d{4}" maxlength="11" {{#if data.phone}} value="{{data.phone}}"
-            {{/if}}>
+            type="tel" pattern="\d{2,3}( |-)?\d{3,4}( |-)?\d{4}" maxlength="20">
+          <div class="valid-feedback">符合</div>
+          <div class="invalid-feedback">請符合台灣市話格式</div>
         </div>
         <!-- 地址 -->
         <div class="input-group mb-3">
@@ -83,58 +83,31 @@
           <label class="input-group-text" for="county">縣市</label>
           <select class="form-control" id="county" name="county">
             <option value="">選擇縣市</option>
-            <!--選了 縣市-->
-            {{#if data.county}}
-            {{#each counties as |county|}}
-            {{#with ../data.county as | myCounty |}}
-            {{#isSame county.name myCounty}}
-            <option value="{{county.name}}" selected>{{county.name}}</option>
-            {{else}}
-            <option value="{{county.name}}">{{county.name}}</option>
-            {{/isSame}}
-            {{/with}}
-            {{/each}}
-            <!--沒有選 縣市-->
-            {{else}}
             {{#each counties}}
             <option value="{{this.name}}">{{this.name}}</option>
             {{/each}}
-            {{/if}}
           </select>
           <!--地區 district-->
-          <!-- 用client js 生成 -->
           <label class="input-group-text" for="district">地區</label>
           <select class="form-control" id="district" name="district">
             <option value="">選擇地區</option>
-            <!--選了 地區-->
-            {{#if data.district}}
-            {{#each districtList as |district|}}
-            {{#with ../data.district as | myDistrict |}}
-            {{#isSame district.name myDistrict}}
-            <option value="{{district.name}}" selected>{{district.name}}</option>
-            {{else}}
-            <option value="{{district.name}}">{{district.name}}</option>
-            {{/isSame}}
-            {{/with}}
-            {{/each}}
-            <!--沒有選 地區-->
-            {{else}}
-            {{#each districtList}}
-            <option value="{{this.name}}">{{this.name}}</option>
-            {{/each}}
-            {{/if}}
+            <!-- 用client js districtSelector.js 生成 -->
           </select>
         </div>
         <!--地址 address-->
         <div class="input-group mb-3">
           <label class="input-group-text" for="address">地址</label>
           <input class="form-control" type="text" name="address" id="address" aria-label="address"
-            placeholder="民生東路三段xxx號 (最多25個字)" maxlength="25" pattern="^[\u4e00-\u9fa5].+" {{#if data.address}}
-            value="{{data.address}}" {{/if}}>
+            placeholder="民生東路三段xxx號 (最多25個字)" maxlength="25" pattern="^[\u4e00-\u9fa5].+">
+          <div class="valid-feedback">符合</div>
+          <div class="invalid-feedback">最多25個字需開頭是中文</div>
         </div>
         <!--submit-->
-        <button type="submit" class="btn btn-primary mt-3" style="width: 100%;">送出</button>
+        <button type="submit" class="submit-btn btn btn-primary mt-3" style="width: 100%;">送出</button>
       </form>
     </div>
   </div>
 </div>
+
+<script src="/javascripts/validate.js"></script>
+<script src="/javascripts/districtSelector.js"></script>

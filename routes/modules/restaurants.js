@@ -14,55 +14,41 @@ router.get('/create', (req, res) => {
 // 新增餐廳 POST
 router.post('/create', async (req, res) => {
   const data = req.body
-  let {
-    name,
-    category,
-    rating,
-    description,
-    county,
-    district,
-    address,
-  } = data
   const userId = req.user._id
 
   try {
-    // 檢查必填資料
-    name = name.trim()
-    if (!name || !category || !rating || !description) {
-      throw new Error('必要資訊(Require) 都是必填的唷。')
+    // 合併出地址 location
+    const location = (data.county + data.district + data.address).trim()
+
+    // location 存入 data
+    if (location) {
+      data.location = location
     }
 
-    // 合併出地址 location
-    const location = (county + district + address).trim()
+    console.log(data.county, data.district, data.address)
 
-    // 檢查地址有的話就填入data，同時製作一個 google map
-    if (location.trim() !== '') {
-      // save to dada
-      data.location = location
-      // google map
+    // 必須集合三個地址資料才會做出一個 google map
+    if (data.county && data.district && data.address) {
+      console.log('做地圖')
       const encodedInput = data.location
       const googleMapLink = `https://www.google.com/maps?q=${encodedInput}`
       data.google_map = googleMapLink
     }
 
-    // 設定餐廳的userId
+
+    // 設定餐廳的 userId
     data.userId = userId
 
     // 製作餐廳資料 後回去餐廳列表
     await Restaurant.create(data)
     res.redirect('/restaurants')
 
-
   } catch (err) {
-    // 回傳目前選擇縣市的 地區 districtList
-    const districtList = counties.find(county => county.name === data.county).region
-
-    res.locals.warning_msg = err.message
-    return res.render('create', { data, categories, counties, districtList })
+    res.locals.warning_msg = '發生預期外的錯誤，請在嘗試看看'
+    console.log(err)
+    return res.render('create', { categories, counties })
   }
 })
-
-
 
 // Read All
 router.get('/', (req, res) => {
@@ -94,7 +80,7 @@ router.get('/:id', (req, res) => {
     .catch(err => console.log(err))
 })
 
-// Update Page
+// 更新 get
 router.get('/:id/edit', (req, res) => {
   const id = req.params.id
   Restaurant.findById(id)
@@ -105,46 +91,41 @@ router.get('/:id/edit', (req, res) => {
     .catch(err => console.log(err))
 })
 
-// Update
-router.put('/:id', (req, res) => {
+// 更新 put
+router.put('/:id', async (req, res) => {
   const id = req.params.id
-  const updateData = req.body
-  let { name, category, rating, description, location } = updateData
+  const data = req.body
+  const userId = req.user._id
 
-  // 檢查必要資料，有少就提示
-  name = name.trim()
-  if (!name || !category || !rating || !description) {
-    updateData._id = id // 讓 edit form 知道 id
-    res.locals.warning_msg = '必要資訊(Require) 都是必填的唷。'
-    return res.render('edit', {
-      restaurant: updateData,
-      categories
-    })
+  try {
+    // location 存入 data
+    if (data.location) {
+      // 做出一個 google map
+      const encodedInput = data.location
+      const googleMapLink = `https://www.google.com/maps?q=${encodedInput}`
+      data.google_map = googleMapLink
+    } else {
+      data.google_map = ''
+    }
+
+    // 設定餐廳的 userId
+    data.userId = userId
+
+    // 修改餐廳資料
+    let restaurant = await Restaurant.findById(id)
+    restaurant = Object.assign(restaurant, data)
+
+    // 存資料
+    await restaurant.save()
+
+    // 回傳
+    res.redirect(`/restaurants/${id}`)
   }
-
-  // 有填地址的話就幫忙製作google地圖連結
-  if (location.trim() !== '') {
-    const encodedInput = updateData.location
-    const googleMapLink = `https://www.google.com/maps?q=${encodedInput}`
-    updateData.google_map = googleMapLink
+  catch (err) {
+    res.locals.warning_msg = '發生預期外的錯誤，請在嘗試看看'
+    console.log(err)
+    return res.redirect(`/restaurants/${id}`, { categories, counties })
   }
-
-  // 修改餐廳資料
-  Restaurant.findById(id)
-    .then(restaurant => {
-      for (const key in updateData) {
-        if (key in restaurant) {
-          restaurant[key] = updateData[key]
-        }
-      }
-      return restaurant.save()
-    })
-    .then(() => {
-      res.redirect(`/restaurants/${id}`)
-    })
-    .catch(error => {
-      console.log(error)
-    })
 })
 
 // Delete
