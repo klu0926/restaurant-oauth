@@ -2,13 +2,12 @@ const express = require('express')
 const router = express.Router()
 const Restaurant = require('../../models/restaurant')
 const categories = require('../../models/data/categories.json')
-const cities = require('../../models/data/tw-zip-code.json').cities
+const counties = require('../../models/data/tw-zip-code.json').cities
 
 // 新增餐廳 GET
 router.get('/create', (req, res) => {
 
-
-  res.render('create', { categories, cities })
+  res.render('create', { categories, counties })
 })
 
 
@@ -55,8 +54,11 @@ router.post('/create', async (req, res) => {
 
 
   } catch (err) {
+    // 回傳目前選擇縣市的 地區 districtList
+    const districtList = counties.find(county => county.name === data.county).region
+
     res.locals.warning_msg = err.message
-    return res.render('create', { data, categories, cities })
+    return res.render('create', { data, categories, counties, districtList })
   }
 })
 
