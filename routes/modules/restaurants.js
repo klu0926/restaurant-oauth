@@ -6,10 +6,8 @@ const counties = require('../../models/data/tw-zip-code.json').cities
 
 // 新增餐廳 GET
 router.get('/create', (req, res) => {
-
   res.render('create', { categories, counties })
 })
-
 
 // 新增餐廳 POST
 router.post('/create', async (req, res) => {
@@ -35,14 +33,12 @@ router.post('/create', async (req, res) => {
       data.google_map = googleMapLink
     }
 
-
     // 設定餐廳的 userId
     data.userId = userId
 
     // 製作餐廳資料 後回去餐廳列表
     await Restaurant.create(data)
     res.redirect('/restaurants')
-
   } catch (err) {
     res.locals.warning_msg = '發生預期外的錯誤，請在嘗試看看'
     console.log(err)
@@ -120,8 +116,7 @@ router.put('/:id', async (req, res) => {
 
     // 回傳
     res.redirect(`/restaurants/${id}`)
-  }
-  catch (err) {
+  } catch (err) {
     res.locals.warning_msg = '發生預期外的錯誤，請在嘗試看看'
     console.log(err)
     return res.redirect(`/restaurants/${id}`, { categories, counties })

@@ -14,15 +14,14 @@ countySelector.addEventListener('change', async () => {
     const regionArray = countyObject.region
 
     // 開始做資料 (第一個資料是空的，之後用array生出來)
-    districtSelector.innerHTML = `<option value="">選擇地區</option>`
+    districtSelector.innerHTML = '<option value="">選擇地區</option>'
     regionArray.forEach(region => {
       const option = `
         <option value="${region.name}">${region.name}</option>
         `
       // 放進去地區input select裡面
       districtSelector.innerHTML += option
-    });
-
+    })
   } catch (err) {
     console.log('districtSelector:', err)
   }
