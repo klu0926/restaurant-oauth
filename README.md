@@ -34,7 +34,7 @@
 6. 使用者可以刪除一家餐廳
 7. 使用者可以依照不同方式排序餐廳
 8. 使用者可以註冊帳號，登入，登出
-9. 使用者可以用 Facebook Login
+9. 使用者可以用 Facebook Login 
 
 ## Installation and execution - 安裝與執行步驟
 
