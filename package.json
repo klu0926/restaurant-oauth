@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "seed": "node models/seeds/seeders.js",
     "deleteAllData": "node models/seeds/deleteAllData.js",
     "dev": "nodemon app.js",
