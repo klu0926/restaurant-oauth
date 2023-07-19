@@ -14,7 +14,7 @@ const usePassport = require('./config/passport')
 
 // app
 const app = express()
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3000
 
 // app view engine
 app.engine('hbs', exphbs({
