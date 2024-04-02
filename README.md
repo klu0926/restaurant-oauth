@@ -101,7 +101,13 @@ server live on http://localhost:3000
 http://localhost:3000 
 ```
 
-12.若欲暫停使用
+12.使用測試用帳密登入
+```
+user1@example.com
+123
+```
+
+13.若欲暫停使用
 ```
 ctrl + c
 ```
